@@ -15,6 +15,7 @@ pygame.display.set_caption("Connect Four MTCS")
 # Main program
 def main():
 	run = True
+	game_over = False
 	FPS = 60
 	clock = pygame.time.Clock()
 
@@ -53,18 +54,21 @@ def main():
 				run = False
 
 			if event.type == pygame.KEYDOWN:
-				if np.isin(event.key, ACTIVE_KEYS):
-					# '1' has unicode 49 -> column index 0
-					valid_move = active_player.make_move(game_grid, event.key - 49)
+				if not game_over:
+					if np.isin(event.key, ACTIVE_KEYS):
+						# '1' has unicode 49 -> column index 0
+						valid_move = active_player.make_move(game_grid, event.key - 49)
 
-					if valid_move:
-						if game_grid.check_win(active_player.ID):
-							print("Player " + str(active_player.ID) + " wins")
-						elif game_grid.check_full():
-							print("Draw")
-						else:
-							# Game is not over. Continue playing
-							active_player = next_player(active_player)
+						if valid_move:
+							if game_grid.check_win(active_player.ID):
+								print("Player " + str(active_player.ID) + " wins")
+								game_over = True
+							elif game_grid.check_full():
+								print("Draw")
+								game_over = True
+							else:
+								# Game is not over. Continue playing
+								active_player = next_player(active_player)
 
 		redraw_window()
 

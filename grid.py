@@ -97,7 +97,8 @@ class Grid:
 		return not np.isin(0, self.data)
 
 	def draw_disc(self, x, y, colour, surface):
-		pygame.draw.rect(surface, colour, (x, y, self.disc_width(), self.disc_height()))
+		centre = (x + self.disc_width()/2, y + self.disc_height()/2)
+		pygame.draw.circle(surface, colour, centre, self.disc_width()/2)
 
 	def draw(self, surface, players):
 		for i, row in enumerate(self.data):
@@ -110,7 +111,6 @@ class Grid:
 				if cell == players[0].ID:
 					self.draw_disc(x, y, players[0].colour, surface)
 				if cell == players[1].ID:
-					colour = (0, 0, 255)
 					self.draw_disc(x, y, players[1].colour, surface)
 
 
