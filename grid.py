@@ -19,6 +19,83 @@ class Grid:
 	def disc_height(self):
 		return self.height / self.no_rows
 
+	def _check_win_horizontal(self, ID):
+		win_found = False
+
+		for row in self.data:
+			for j in range(self.no_cols - 3):
+				is_win = True
+
+				for k in range(4):
+					if row[j + k] != ID:
+						is_win = False
+						break
+
+				if is_win:
+					win_found = True
+
+		return win_found
+
+	def _check_win_vertical(self, ID):
+		win_found = False
+
+		for j in range(0, self.no_cols):
+			for i in range(0, self.no_rows - 3):
+				is_win = True
+
+				for k in range(4):
+					if self.data[i + k, j] != ID:
+						is_win = False
+						break
+
+				if is_win:
+					win_found = True
+
+		return win_found
+
+	def _check_win_diagonal_up(self, ID):
+		win_found = False
+
+		for j in range(0, self.no_cols - 3):
+			for i in range(0, self.no_rows - 3):
+				is_win = True
+
+				for k in range(4):
+					if self.data[i + k, j + k] != ID:
+						is_win = False
+						break
+
+				if is_win:
+					win_found = True
+
+		return win_found
+
+	def _check_win_diagonal_down(self, ID):
+		win_found = False
+
+		for j in range(0, self.no_cols - 3):
+			for i in range(3, self.no_rows):
+				is_win = True
+
+				for k in range(4):
+					if self.data[i - k, j + k] != ID:
+						is_win = False
+						break
+
+				if is_win:
+					win_found = True
+
+		return win_found
+
+	def _check_win_diagonal(self, ID):
+		return self._check_win_diagonal_up(ID) or self._check_win_diagonal_down(ID)
+
+	def check_win(self, ID):
+		return (self._check_win_horizontal(ID) or self._check_win_vertical(ID) or self._check_win_diagonal(ID))
+
+	def check_full(self):
+		return not np.isin(0, self.data)
+
 	def draw_disc(self, x, y, colour, surface):
 		pygame.draw.rect(surface, colour, (x, y, self.disc_width(), self.disc_height()))
 

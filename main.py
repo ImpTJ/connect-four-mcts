@@ -58,7 +58,13 @@ def main():
 					valid_move = active_player.make_move(game_grid, event.key - 49)
 
 					if valid_move:
-						active_player = next_player(active_player)
+						if game_grid.check_win(active_player.ID):
+							print("Player " + str(active_player.ID) + " wins")
+						elif game_grid.check_full():
+							print("Draw")
+						else:
+							# Game is not over. Continue playing
+							active_player = next_player(active_player)
 
 		redraw_window()
 
