@@ -24,9 +24,10 @@ def main():
 	game_grid = Grid(6, 7, 0, 0, WIDTH, HEIGHT)
 	players = [
 		PlayerUser(1, DISC_COLOURS[0]),
-		PlayerUser(2, DISC_COLOURS[1])
+		PlayerAI(2, DISC_COLOURS[1])
 	]
 	active_player = players[0]
+	move_made = False
 
 	# Functions
 	def next_player(prev_player):
@@ -49,27 +50,36 @@ def main():
 	while run:
 		clock.tick(FPS)
 
+		move_made = False
+
+		# Events
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				run = False
 
 			if event.type == pygame.KEYDOWN:
-				if not game_over:
-					if np.isin(event.key, ACTIVE_KEYS):
-						# '1' has unicode 49 -> column index 0
-						valid_move = active_player.make_move(game_grid, event.key - 49)
+				if np.isin(event.key, ACTIVE_KEYS) and active_player.tag == "user" and not move_made and not game_over:
+					# User makes move
+					# '1' has unicode 49 -> column index 0
+					move_made = active_player.make_move(game_grid, event.key - 49)
 
-						if valid_move:
-							if game_grid.check_win(active_player.ID):
-								print("Player " + str(active_player.ID) + " wins")
-								game_over = True
-							elif game_grid.check_full():
-								print("Draw")
-								game_over = True
-							else:
-								# Game is not over. Continue playing
-								active_player = next_player(active_player)
+		# AI makes move
+		if active_player.tag == "AI":
+			move_made = active_player.think_move_mcts(game_grid)
 
+		# If a player makes a move
+		if move_made:
+			if game_grid.check_win(active_player.ID):
+				print("Player " + str(active_player.ID) + " wins")
+				game_over = True
+			elif game_grid.check_full():
+				print("Draw")
+				game_over = True
+			else:
+				# Game is not over. Continue playing
+				active_player = next_player(active_player)
+
+		# GUI
 		redraw_window()
 
 main()
