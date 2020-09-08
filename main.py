@@ -1,4 +1,5 @@
 import pygame, time
+import numpy as np
 from grid import *
 from player import *
 
@@ -10,7 +11,7 @@ DISC_COLOURS = [
 ]
 
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Connect Four MTCS")
+pygame.display.set_caption("Connect Four MCTS")
 
 # Main program
 def main():
@@ -28,6 +29,10 @@ def main():
 	]
 	active_player = players[0]
 	move_made = False
+
+	# Initialisation
+	players[0].set_opponent(players[1])
+	players[1].set_opponent(players[0])
 
 	# Functions
 	def next_player(prev_player):
@@ -63,21 +68,22 @@ def main():
 					# '1' has unicode 49 -> column index 0
 					move_made = active_player.make_move(game_grid, event.key - 49)
 
-		# AI makes move
-		if active_player.tag == "AI":
-			move_made = active_player.think_move_mcts(game_grid)
+		if not game_over:
+			# AI makes move
+			if active_player.tag == "AI":
+				move_made = active_player.think_move_mcts(game_grid)
 
-		# If a player makes a move
-		if move_made:
-			if game_grid.check_win(active_player.ID):
-				print("Player " + str(active_player.ID) + " wins")
-				game_over = True
-			elif game_grid.check_full():
-				print("Draw")
-				game_over = True
-			else:
-				# Game is not over. Continue playing
-				active_player = next_player(active_player)
+			# If a player makes a move
+			if move_made:
+				if game_grid.check_win(active_player.ID):
+					print("Player " + str(active_player.ID) + " wins")
+					game_over = True
+				elif game_grid.check_full():
+					print("Draw")
+					game_over = True
+				else:
+					# Game is not over. Continue playing
+					active_player = next_player(active_player)
 
 		# GUI
 		redraw_window()

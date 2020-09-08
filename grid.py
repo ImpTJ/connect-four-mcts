@@ -96,6 +96,9 @@ class Grid:
 	def check_full(self):
 		return not np.isin(0, self.data)
 
+	def check_game_over(self, ID, ID2):
+		return self.check_win(ID) or self.check_win(ID2) or self.check_full()
+
 	def draw_disc(self, x, y, colour, surface):
 		centre = (x + self.disc_width()/2, y + self.disc_height()/2)
 		pygame.draw.circle(surface, colour, centre, self.disc_width()/2)
