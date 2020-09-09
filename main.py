@@ -1,3 +1,25 @@
+####################################
+
+# Connect 4
+# AI vs Player
+# (Can customise to Player vs Player, AI vs AI, Player vs AI easily)
+
+
+# Using Monte Carlo Tree Search
+# Customisable iterations and search depth
+
+# Made in ~10 hours (over 4 days)
+# With NO online help on the MCTS algorithm (only previous knowledge)
+
+# Author: Freddy JIANG
+
+####################################
+
+
+
+
+
+
 import pygame, time
 import numpy as np
 from grid import *
