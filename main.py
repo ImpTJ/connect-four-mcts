@@ -24,8 +24,8 @@ def main():
 
 	game_grid = Grid(6, 7, 0, 0, WIDTH, HEIGHT)
 	players = [
-		PlayerUser(1, DISC_COLOURS[0]),
-		PlayerAI(2, DISC_COLOURS[1])
+		PlayerAI(1, DISC_COLOURS[0], search_depth = 3, ips = 10),
+		PlayerUser(2, DISC_COLOURS[1])
 	]
 	active_player = players[0]
 	move_made = False
