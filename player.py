@@ -123,8 +123,10 @@ class PlayerAI(Player):
 			current_depth += 1
 
 	def get_chosen_col(self):
-		chosen_col = None
-		highest_weighting = self.root_node.child_nodes[0].get_weighting()
+		# Default chosen column is 0
+		default_node = self.root_node.child_nodes[0]
+		chosen_col = default_node.move_col
+		highest_weighting = default_node.get_weighting()
 
 
 		for node in self.root_node.child_nodes:
