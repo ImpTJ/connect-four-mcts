@@ -57,7 +57,9 @@ $ python3 main.py
 
 Use keys 1-7 to drop a disc in the respective column. AI starts first. Good luck!
 
--- Freddy Jiang
+
+
+*Freddy Jiang*
 
 
 
